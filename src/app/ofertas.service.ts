@@ -54,22 +54,32 @@ export class OfertasService{
     ]
 
     getOfertas(): Oferta[] {
-      return this.ofertas
+        return this.ofertas
     }
 
     getOfertas2(): Promise<Oferta[]> {
         return new Promise((resolve,reject) =>{
-            console.log('1º then')
             setTimeout(
                 //Ecapsulmento do resolve em funcao
                 ()=> resolve(this.ofertas )
-           ,3000)
-        }).then((ofertas: Oferta[]) =>{
-            console.log('2º then')
-            return ofertas
-        }).then((ofertas: Oferta[]) =>{
-            console.log('3º then')
-            return ofertas
+                ,3000)
         })
+            .then((ofertas: Oferta[]) =>{
+                console.log('1º then')
+                return ofertas
+            })
+            .then((ofertas: Oferta[]) =>{
+                console.log('2º then')
+                return new Promise((resolve2,reject2)=>{
+                    setTimeout(
+                        //Ecapsulmento do resolve em funcao
+                        ()=> resolve2(ofertas )
+                        ,3000)
+                })
+            })
+            .then((ofertas: Oferta[])=> {
+            console.log('3º then após mais 3 segundos onde o resolve foi entregue')
+            return ofertas
+            })
     }
 }
