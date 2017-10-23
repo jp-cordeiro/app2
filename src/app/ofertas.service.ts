@@ -17,10 +17,18 @@ export class OfertasService{
     }
 
     getOfertasPorCategoria(categoria: string): Promise<Oferta[]>{
-            return this.http.get(`
+        return this.http.get(`
             http://localhost:3000/ofertas?categoria=${categoria}
             `)
-                .toPromise()
-                .then((reposta: any)=> reposta.json())
+            .toPromise()
+            .then((reposta: any)=> reposta.json())
+    }
+
+    getOfertaPorId(id: number): Promise<Oferta>{
+        return this.http.get(`
+            http://localhost:3000/ofertas?id=${id}
+            `)
+            .toPromise()
+            .then((reposta: any)=> reposta.json()[0])
     }
 }
