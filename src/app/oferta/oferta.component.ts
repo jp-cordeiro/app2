@@ -11,6 +11,8 @@ import {Oferta} from "../shared/model/oderta.model";
 })
 export class OfertaComponent implements OnInit {
 
+  oferta: Oferta
+
   constructor(
       private route: ActivatedRoute,
       private ofertasService: OfertasService
@@ -28,8 +30,8 @@ export class OfertaComponent implements OnInit {
     //this.route.params.subscribe((parametro: any)=> { })
 
     this.ofertasService.getOfertaPorId(this.route.snapshot.params['id'])
-        .then((oferta: Oferta)=> {
-
+        .then((rOferta: Oferta)=> {
+          this.oferta = rOferta
         })
   }
 
