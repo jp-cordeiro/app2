@@ -1,85 +1,26 @@
 import {Oferta} from "./shared/model/oderta.model";
+import {Http} from "@angular/http";
+import {Injectable} from "@angular/core";
 
+import 'rxjs/add/operator/toPromise'
+
+@Injectable()
 export class OfertasService{
 
-    ofertas: Oferta[] = [
-        {
-            id: 1,
-            categoria: "restaurante",
-            titulo: "Super Burger",
-            descricao_oferta: "Rodízio de Mini-hambúrger com opção de entrada.",
-            anunciante: "Original Burger",
-            valor: 29.90,
-            destaque: true,
-            imagens: [
-                {url: "/assets/ofertas/1/img1.jpg"},
-                {url: "/assets/ofertas/1/img2.jpg"},
-                {url: "/assets/ofertas/1/img3.jpg"},
-                {url: "/assets/ofertas/1/img4.jpg"}
-            ]
-        },
-        {
-            id: 2,
-            categoria: "restaurante",
-            titulo: "Cozinha Mexicana",
-            descricao_oferta: "Almoço ou Jantar com Rodízio Mexicano delicioso.",
-            anunciante: "Mexicana",
-            valor: 32.90,
-            destaque: true,
-            imagens: [
-                {url: "/assets/ofertas/2/img1.jpg"},
-                {url: "/assets/ofertas/2/img2.jpg"},
-                {url: "/assets/ofertas/2/img3.jpg"},
-                {url: "/assets/ofertas/2/img4.jpg"}
-            ]
+    constructor(
+        private http: Http){}
 
-        },
-        {
-            id: 4,
-            categoria: "diversao",
-            titulo: "Estância das águas",
-            descricao_oferta: "Diversão garantida com piscinas, trilhas e muito mais.",
-            anunciante: "Estância das águas",
-            valor: 31.90,
-            destaque: true,
-            imagens: [
-                {url: "/assets/ofertas/3/img1.jpg"},
-                {url: "/assets/ofertas/3/img2.jpg"},
-                {url: "/assets/ofertas/3/img3.jpg"},
-                {url: "/assets/ofertas/3/img4.jpg"},
-                {url: "/assets/ofertas/3/img5.jpg"},
-                {url: "/assets/ofertas/3/img6.jpg"}
-            ]
-        }
-    ]
-
-    getOfertas(): Oferta[] {
-        return this.ofertas
+    getOfertas(): Promise<Oferta[]> {
+        return this.http.get('http://localhost:3000/ofertas?destaque=true')
+            .toPromise()
+            .then((resposta: any)=> resposta.json())
     }
 
-    getOfertas2(): Promise<Oferta[]> {
-        return new Promise((resolve,reject) =>{
-            setTimeout(
-                //Ecapsulmento do resolve em funcao
-                ()=> resolve(this.ofertas )
-                ,3000)
-        })
-            .then((ofertas: Oferta[]) =>{
-                console.log('1º then')
-                return ofertas
-            })
-            .then((ofertas: Oferta[]) =>{
-                console.log('2º then')
-                return new Promise((resolve2,reject2)=>{
-                    setTimeout(
-                        //Ecapsulmento do resolve em funcao
-                        ()=> resolve2(ofertas )
-                        ,3000)
-                })
-            })
-            .then((ofertas: Oferta[])=> {
-            console.log('3º then após mais 3 segundos onde o resolve foi entregue')
-            return ofertas
-            })
+    getOfertasPorCategoria(categoria: string): Promise<Oferta[]>{
+            return this.http.get(`
+            http://localhost:3000/ofertas?categoria=${categoria}
+            `)
+                .toPromise()
+                .then((reposta: any)=> reposta.json())
     }
 }

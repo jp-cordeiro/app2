@@ -1,0 +1,41 @@
+<section class="container">
+  
+  <div class="secao">
+    <h3 class="text-center">Cinema, viagens, diversão muito e mais!</h3>
+    <h5 class="text-center">Conheça as melhores ofertas para você se divertir quando quiser:</h5>
+  </div>
+
+  <hr />
+
+  <article *ngFor="let ofertaDiversao of ofertasDiversao">
+    <div class="row">
+      <div class="col-md-4">
+        <img [src]="ofertaDiversao.imagens[0].url" class="img-fluid" />
+      </div>
+
+      <div class="col-md-8">
+        <div class="row">
+          <h4>{{ofertaDiversao.titulo}}</h4>
+        </div>
+
+        <div class="row">
+          <h5>{{ofertaDiversao.descricao_oferta}}</h5>
+        </div>
+
+        <div class="row">
+          <p>Anunciado por: <b>{{ofertaDiversao.anunciante}}</b></p>
+        </div>
+
+        <div class="row">
+          <p>{{ofertaDiversao.valor}}</p>
+        </div>
+
+        <div class="row">
+          <button [routerLink]="['/oferta',ofertaDiversao.id]" class="btn btn-outline-success">Ver oferta</button>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+  </article>
+</section>
