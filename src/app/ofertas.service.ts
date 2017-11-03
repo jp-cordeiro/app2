@@ -4,6 +4,8 @@ import {Injectable} from "@angular/core";
 
 import 'rxjs/add/operator/toPromise'
 import {URL_API} from "./app.api";
+import {Observable} from "rxjs/Observable";
+
 
 @Injectable()
 export class OfertasService{
@@ -52,5 +54,16 @@ export class OfertasService{
             .then((respota: any)=> {
                 return respota.json()[0].descricao
             })
+    }
+
+    pesquisaOferta(termo: string): Observable<Oferta[]>{
+        return this.http.get(`
+        ${URL_API}/ofertas?descricao_oferta_like=${termo}
+        `)
+        /**
+         * Caso tenha falhado na conexao, tenta realizar uma nova tentantiva baseado na quantidade de vezes setada
+         */
+            .retry(10)
+            .map((resposta:any)=> resposta.json())
     }
 }
