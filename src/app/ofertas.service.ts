@@ -1,5 +1,5 @@
 import {Oferta} from "./shared/model/oderta.model";
-import {Http} from "@angular/http";
+import {Http, Response} from "@angular/http";
 import {Injectable} from "@angular/core";
 
 import 'rxjs/add/operator/toPromise'
@@ -15,7 +15,7 @@ export class OfertasService{
     getOfertas(): Promise<Oferta[]> {
         return this.http.get(`${URL_API}/ofertas?destaque=true`)
             .toPromise()
-            .then((resposta: any)=> resposta.json())
+            .then((resposta: Response)=> resposta.json())
     }
 
     getOfertasPorCategoria(categoria: string): Promise<Oferta[]>{
@@ -23,7 +23,7 @@ export class OfertasService{
             ${URL_API}/ofertas?categoria=${categoria}
             `)
             .toPromise()
-            .then((resposta: any)=> resposta.json())
+            .then((resposta: Response)=> resposta.json())
     }
 
     getOfertaPorId(id: number): Promise<Oferta>{
@@ -31,7 +31,7 @@ export class OfertasService{
             ${URL_API}/ofertas?id=${id}
             `)
             .toPromise()
-            .then((resposta: any)=> {
+            .then((resposta: Response)=> {
                 return resposta.json()[0]
             })
     }
@@ -41,7 +41,7 @@ export class OfertasService{
             ${URL_API}/como-usar?id=${id}
             `)
             .toPromise()
-            .then((resposta: any)=> {
+            .then((resposta: Response)=> {
                 return resposta.json()[0].descricao
             })
     }

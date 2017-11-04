@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {Oferta} from "../shared/model/oderta.model";
 import {OfertasService} from "../ofertas.service";
+import {Subject} from "rxjs/Subject";
+import {isEmpty} from "rxjs/operator/isEmpty";
 
 @Component({
   selector: 'topo',
@@ -12,23 +14,44 @@ import {OfertasService} from "../ofertas.service";
 export class TopoComponent implements OnInit {
 
   ofertas: Observable<Oferta[]>
+  //Proxy
+  private subjectPesquisa: Subject<string> = new Subject<string>()
 
   constructor(
       private ofertasService: OfertasService
   ) { }
 
   ngOnInit() {
-  }
+    this.ofertas = this.subjectPesquisa
+        //Determina o tempo que o SwitchMap irá executar o Observable (em ms)
+        .debounceTime(1000)
+        //Recebe os parametros a cada next disparado e cancela a inscricao do Observable anterior
+        .switchMap((termoBusca: string)=> {
+        //Retorna um array de Ofertas vazio caso o termoBusca esteja vazio
+          if(termoBusca.trim() === ''){
+            return Observable.of<Oferta[]>([])
+          }
 
-  pesquisa(termoBusca: string): void{
-    this.ofertas = this.ofertasService.pesquisaOferta(termoBusca)
+          return this.ofertasService.pesquisaOferta(termoBusca)
+        })
 
     this.ofertas.subscribe(
-        (oferta: Oferta[])=> console.log(oferta),
+        (ofertas: Oferta[])=> console.log(ofertas),
         (erro: any) => console.log(erro),
         (()=> console.log('Todos os eventos foram concluídos.'))
     )
   }
 
+  pesquisa(termoBusca: string): void{
+    // this.ofertas = this.ofertasService.pesquisaOferta(termoBusca)
+    //
+    // this.ofertas.subscribe(
+    //     (ofertas: Oferta[])=> console.log(oferta),
+    //     (erro: any) => console.log(erro),
+    //     (()=> console.log('Todos os eventos foram concluídos.'))
+    // )
 
+    //Inscreve o parametro em um Obervable
+    this.subjectPesquisa.next(termoBusca)
+  }
 }
