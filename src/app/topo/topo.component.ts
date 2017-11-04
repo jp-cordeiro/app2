@@ -25,6 +25,8 @@ export class TopoComponent implements OnInit {
     this.ofertas = this.subjectPesquisa
         //Determina o tempo que o SwitchMap irá executar o Observable (em ms)
         .debounceTime(1000)
+        //Caso o termoBusca tenha o mesmo valor da pesquisa anterior, a requisicao nao será realizada
+        .distinctUntilChanged()
         //Recebe os parametros a cada next disparado e cancela a inscricao do Observable anterior
         .switchMap((termoBusca: string)=> {
         //Retorna um array de Ofertas vazio caso o termoBusca esteja vazio
