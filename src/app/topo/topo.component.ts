@@ -3,7 +3,6 @@ import {Observable} from "rxjs/Observable";
 import {Oferta} from "../shared/model/oderta.model";
 import {OfertasService} from "../ofertas.service";
 import {Subject} from "rxjs/Subject";
-import {isEmpty} from "rxjs/operator/isEmpty";
 
 @Component({
   selector: 'topo',
@@ -23,18 +22,25 @@ export class TopoComponent implements OnInit {
 
   ngOnInit() {
     this.ofertas = this.subjectPesquisa
-        //Determina o tempo que o SwitchMap irá executar o Observable (em ms)
+    //Determina o tempo que o SwitchMap irá executar o Observable (em ms)
         .debounceTime(1000)
         //Caso o termoBusca tenha o mesmo valor da pesquisa anterior, a requisicao nao será realizada
         .distinctUntilChanged()
         //Recebe os parametros a cada next disparado e cancela a inscricao do Observable anterior
         .switchMap((termoBusca: string)=> {
-        //Retorna um array de Ofertas vazio caso o termoBusca esteja vazio
+          //Retorna um array de Ofertas vazio caso o termoBusca esteja vazio
           if(termoBusca.trim() === ''){
             return Observable.of<Oferta[]>([])
           }
 
           return this.ofertasService.pesquisaOferta(termoBusca)
+        })
+        .catch((erro:any)=> {
+          //Comunicacao de erro para o usuario ou armazenamento do erro em log
+          console.log(erro)
+
+          //Retorna um Observable de array de Ofertas que é o que a aplicação espera receber, sendo assim, a mesma nao irá quebrar.
+          return Observable.of<Oferta[]>([])
         })
 
     this.ofertas.subscribe(
