@@ -4,9 +4,9 @@ import {Pipe, PipeTransform} from "@angular/core";
     name: 'descricaoReduzida'
 })
 export class DescricaoReduzida implements PipeTransform{
-    transform(texto: string): string {
+    transform(texto: string, limiteTrunc: number): string {
        if(texto.length > 15){
-           return texto.substr(0,15) + '...'
+           return texto.substr(0,limiteTrunc) + '...'
        }else{
            return texto
        }
