@@ -57,4 +57,8 @@ export class TopoComponent implements OnInit {
         //Inscreve o parametro em um Obervable
         this.subjectPesquisa.next(termoBusca)
     }
+
+    limpaPesquisa(): void{
+        this.subjectPesquisa.next('')
+    }
 }
