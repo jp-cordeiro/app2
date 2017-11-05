@@ -13,7 +13,6 @@ import {Subject} from "rxjs/Subject";
 export class TopoComponent implements OnInit {
 
     ofertas: Observable<Oferta[]>
-    ofertasObj: Oferta[]
     //Proxy
     private subjectPesquisa: Subject<string> = new Subject<string>()
 
@@ -44,13 +43,6 @@ export class TopoComponent implements OnInit {
                 return Observable.of<Oferta[]>([])
             })
 
-        this.ofertas.subscribe(
-            (ofertas: Oferta[])=> {
-                this.ofertasObj = ofertas
-            },
-            (erro: any) => console.log(erro),
-            (()=> console.log('Todos os eventos foram concluídos.'))
-        )
     }
 
     pesquisa(termoBusca: string): void{
