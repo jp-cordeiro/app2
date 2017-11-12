@@ -186,26 +186,6 @@
     }
   ],
   "pedidos": [
-    {
-      "endereco": "fdsfds",
-      "numero": "dfdsf",
-      "complento": "dsfd",
-      "formaPagamento": "dinheiro",
-      "id": 1
-    },
-    {
-      "endereco": "ewqewq",
-      "numero": "dfdsf",
-      "complento": "dsfd",
-      "formaPagamento": "dinheiro",
-      "id": 2
-    },
-    {
-      "endereco": "test",
-      "numero": "teste",
-      "complento": "teste",
-      "formaPagamento": "dinheiro",
-      "id": 3
-    }
+
   ]
 }
