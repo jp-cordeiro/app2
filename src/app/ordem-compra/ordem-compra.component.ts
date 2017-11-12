@@ -1,16 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import {OrdemCompraService} from "../ordem-compra.service";
+import {Pedido} from "../shared/model/pedido.model";
 
 @Component({
   selector: 'ordem-compra',
   templateUrl: './ordem-compra.component.html',
-  styleUrls: ['./ordem-compra.component.css']
+  styleUrls: ['./ordem-compra.component.css'],
+  providers: [OrdemCompraService]
 })
 export class OrdemCompraComponent implements OnInit {
+
+  public idPedidoCompra: number
 
   public endereco: string = ''
   public numero: string = ''
   public complemento: string = ''
-  public formaPagamento: string = 'dinheiro'
+  public formaPagamento: string = ''
 
   //Controles de valicao dos campos
   public enderecoValido: boolean
@@ -25,7 +30,12 @@ export class OrdemCompraComponent implements OnInit {
   public complementoEstadoPrimitivo: boolean = true
   public formaPagamentoEstadoPrimitivo: boolean = true
 
-  constructor() { }
+  //Controle do botao de confirmar compra
+  public formEstado: string = 'disabled'
+
+  constructor(
+      private ordemCompraService : OrdemCompraService
+  ) { }
 
   ngOnInit() {
   }
@@ -55,6 +65,8 @@ export class OrdemCompraComponent implements OnInit {
     else {
       this.numeroValido = false
     }
+
+    this.habilitaForm()
   }
 
   atualizaComplemento(complemento: string): void{
@@ -65,6 +77,8 @@ export class OrdemCompraComponent implements OnInit {
     if(this.complemento.length > 3){
       this.complementoValido = true
     }
+
+    this.habilitaForm()
   }
 
   atualizaFormaPagamento(formaPagamento: string): void{
@@ -78,5 +92,33 @@ export class OrdemCompraComponent implements OnInit {
     else {
       this.formaPagamentoValido = false
     }
+
+    this.habilitaForm()
+  }
+
+  habilitaForm(): void{
+    if(
+        this.enderecoValido === true &&
+        this.numeroValido === true &&
+        this.formaPagamentoValido === true){
+      this.formEstado = ''
+    }
+    else{
+      this.formEstado = 'disabled'
+    }
+  }
+
+  confirmarCompra() :void{
+    let pedido: Pedido = new Pedido(
+        this.endereco,
+        this.numero,
+        this.complemento,
+        this.formaPagamento
+    )
+
+    this.ordemCompraService.efetivarOrdemCompra(pedido)
+        .subscribe((idPedido: number)=> {
+          this.idPedidoCompra = idPedido
+        })
   }
 }
