@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {Oferta} from "../shared/model/oderta.model";
+import {Oferta} from "../shared/model/oferta.model";
 import {OfertasService} from "../ofertas.service";
 import {Subject} from "rxjs/Subject";
 

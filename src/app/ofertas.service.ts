@@ -1,4 +1,4 @@
-import {Oferta} from "./shared/model/oderta.model";
+import {Oferta} from "./shared/model/oferta.model";
 import {Http, Response} from "@angular/http";
 import {Injectable} from "@angular/core";
 

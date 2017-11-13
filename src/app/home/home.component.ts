@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OfertasService } from '../ofertas.service'
-import {Oferta} from "../shared/model/oderta.model";
+import {Oferta} from "../shared/model/oferta.model";
 
 @Component({
   selector: 'home',

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrdemCompraService } from '../ordem-compra.service'
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Pedido} from "../shared/model/pedido.model";
+import {CarrinhoService} from "../carrinho.service";
+import {ItemCarrinho} from "../shared/model/item-carrinho";
 
 @Component({
   selector: 'app-ordem-compra',
@@ -12,6 +14,8 @@ import {Pedido} from "../shared/model/pedido.model";
 export class OrdemCompraComponent implements OnInit {
 
   idPedidoCompra: number
+  itensCarrinho: ItemCarrinho[]
+
   formOrdemCompra: FormGroup = new FormGroup({
     'endereco': new FormControl(null,[
       Validators.required,
@@ -30,17 +34,18 @@ export class OrdemCompraComponent implements OnInit {
   })
 
   constructor(
-      private ordemCompraService: OrdemCompraService
+      private ordemCompraService: OrdemCompraService,
+      private carrinhoService: CarrinhoService
   ) { }
 
   ngOnInit() {
+    this.itensCarrinho = this.carrinhoService.exibirItens()
 
+    console.log(this.itensCarrinho)
   }
 
   public confirmarCompra(): void {
     let pedido: Pedido = this.formOrdemCompra.value
-
-    console.log(pedido)
 
     this.ordemCompraService.efetivarOrdemCompra(pedido)
         .subscribe((idPedidoCompra: number)=> {
