@@ -40,8 +40,6 @@ export class OrdemCompraComponent implements OnInit {
 
   ngOnInit() {
     this.itensCarrinho = this.carrinhoService.exibirItens()
-
-    console.log(this.itensCarrinho)
   }
 
   public confirmarCompra(): void {
@@ -52,4 +50,13 @@ export class OrdemCompraComponent implements OnInit {
           this.idPedidoCompra = idPedidoCompra
         })
   }
+
+  adicionarQuantidade(item: ItemCarrinho): void{
+    this.carrinhoService.adicionarQuantidade(item)
+  }
+
+  subtrairQuantidade(item: ItemCarrinho): void{
+    this.carrinhoService.subtrairQuantidade(item)
+  }
+
 }
